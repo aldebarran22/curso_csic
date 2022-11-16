@@ -36,29 +36,55 @@ class Persona:
     def cumple(self):
         self.edad+=1
 
+    def hablarCon(self, otro=None):
+        if not otro:
+            print(self.nombre+" está hablando solo")
+        else:
+            print(self.nombre+" y "+otro.nombre+ \
+                " están hablando")        
+
     def __del__(self):
-        # Se liga con la función: del() 
-        print('Se borra ',self.nombre)
+        # Se liga con la función: del()
+        pass 
+        #print('Se borra ',self.nombre)
     
 class Empleado(Persona):
 
     def __init__(self,nombre='',ape="",edad=0, \
-        empresa="",sueldo=0.0):
-        Persona.__init__(self,nombre,ape,edad)
+        empresa="",sueldo=0.0, idiomas=[]):
+        #Persona.__init__(self,nombre,ape,edad)
+        super().__init__(nombre,ape,edad)
         self.empresa = empresa
         self.sueldo=sueldo
+        self.idiomas = idiomas
 
     def __str__(self):
         return Persona.__str__(self)+" "+ \
             self.empresa+" "+str(self.sueldo)
 
+    def hablarCon(self, otro=None):
+        if not otro:
+            Persona.hablarCon(self, otro)
+        else:
+            c1 = set(self.idiomas)
+            c2 = set(otro.idiomas)
+            inter = c1 & c2
+            if len(inter)==0:
+                raise ValueError('No tienen idioma común')
+            else:
+                print(self.nombre+" y "+otro.nombre + \
+                    " hablan en: " + " o ".join(inter))
+
+
 if __name__=='__main__':
-    e1 = Empleado('Julio','Sanz',45,'csic',3000)
-    print(e1)
-    e1.cumple()
-    print(e1)
+    e1 = Empleado('Julio','Sanz',45,\
+        'csic',3000,['alemán','polaco'])
+    e2 = Empleado('Carmen','Gomez',45,\
+        'csic',3000,['inglés','francés'])
+    e1.hablarCon()
+    e1.hablarCon(e2)
 
-
+    """
     p1 = Persona('Julia','Sanz',56)
     #print(p1.__str__())
     print(p1)
@@ -77,4 +103,4 @@ if __name__=='__main__':
     print(p1.tno)
     L2 = [p.__dict__ for p in L]
     print(L2)
-
+    """
