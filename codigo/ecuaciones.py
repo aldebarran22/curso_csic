@@ -30,8 +30,15 @@ class Ecuaciones:
         for e in self.L:
             ecu = e.partition('=')[0]
             incog = re.split(self.incognitas,ecu)
-            ecu_aux = [int(i) if i!='' else 1 \
-                for i in incog[:-1]]
+            ecu_aux = []
+            for i in incog[:-1]:
+                if i == '':
+                    ecu_aux.append(1)
+                elif i == '-': # Podemos tener -> -x y hay que añadir -1
+                    ecu_aux.append(-1)
+                else:
+                    ecu_aux.append(int(i))
+           
             aux.append(ecu_aux)
         return np.array(aux)
 
